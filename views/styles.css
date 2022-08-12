@@ -1,0 +1,13 @@
+/* import Ubuntu font */
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+	font-family: "Ubuntu", sans-serif;
+	color: #212529;
+	background-color: #f8fafc;
+	@apply text-slate-600;
+}
