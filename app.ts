@@ -1,17 +1,16 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-require("dotenv").config();
-const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
+import express from "express";
+import bodyParser from "body-parser";
+import * as dotenv from "dotenv";
+import mongoose from "mongoose";
+
+import Link from "./models/link";
+
+dotenv.config();
 
 // create express app
 const app = express();
 
-// connect to mongodb
-const client = new MongoClient(process.env.DBURI, {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-	serverApi: ServerApiVersion.v1,
-});
+const client = mongoose.connect(process.env.DBURI!);
 
 // view engine setup
 app.set("view engine", "ejs");
@@ -37,29 +36,44 @@ app.post("/api", (req, res) => {
 	const id = (Date.now() + Math.floor(Math.random() * 1660290034505))
 		.toString(36)
 		.substring(2, 6);
-	client.connect((err) => {
-		const collection = client.db("ShortLink").collection("Links");
-		collection.insertOne({ id, url }, (err, result) => {
-			client.close();
-			res.json({ id });
+	const link = new Link({ id, url });
+	client
+		.then((db) => {
+			console.log(db);
+			link
+				.save()
+				.then((result) => {
+					res.json({ id });
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		})
+		.catch((err) => {
+			console.log(err);
+		})
+		.finally(() => {
+			mongoose.connection.close();
 		});
-	});
 });
 
 app.get("/:id", (req, res, next) => {
 	const id = req.params.id;
-	client.connect((err) => {
-		const collection = client.db("ShortLink").collection("Links");
-		collection.findOne({ id }, (err, doc) => {
-			client.close();
-			if (doc) {
-				res.redirect(doc.url);
+
+	Link.findOne({ id })
+		.then((result) => {
+			if (result) {
+				res.redirect(result.url);
 			} else {
-				// next();
-				res.status(404).render("404", { title: "404" });
+				next();
 			}
+		})
+		.catch((err) => {
+			console.log(err);
+		})
+		.finally(() => {
+			res.end();
 		});
-	});
 });
 
 // 404 page

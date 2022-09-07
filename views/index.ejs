@@ -52,7 +52,7 @@
 						.then((data) => {
 							console.log(data);
 							input.value = window.location.href + data.id;
-							input.classList.add("bg-green-200");
+							input.classList.add("bg-green-200 disabled");
 						})
 						.catch((err) => {
 							console.log(err);
