@@ -1,3 +1,4 @@
-/node_modules/
+# Generated directories:
+dist/
+node_modules/
 .env
-*.js
