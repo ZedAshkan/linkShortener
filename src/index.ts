@@ -10,17 +10,22 @@ dotenv.config();
 // create express app
 const app = express();
 
-const client = mongoose.connect(process.env.DBURI!);
+mongoose
+  .connect(process.env.DBURI!)
+  .then(() => {
+    // listen for requests
+    app.listen(3000, () => {
+      console.log("Example app listening on port 3000!");
+    });
+  })
+  .catch(err => {
+    console.log("connect to database failed", err);
+  });
 
 // view engine setup
 app.set("view engine", "ejs");
-//file location
+// file location
 app.set("views", "dist/views");
-
-// listen for requests
-app.listen(3000, () => {
-  console.log("Example app listening on port 3000!");
-});
 
 // use public folder to store static assets
 app.use(express.static("dist/public"));
@@ -33,49 +38,39 @@ app.get("/", (req, res) => {
   res.render("index", { title: "Home" });
 });
 
-app.post("/api", (req, res) => {
+app.post("/api", async (req, res) => {
   const url = req.body.url;
-  const id = (Date.now() + Math.floor(Math.random() * 1660290034505))
-    .toString(36)
-    .substring(2, 6);
-  const link = new Link({ id, url });
-  client
-    .then(db => {
-      console.log(db);
-      link
-        .save()
-        .then(result => {
-          res.json({ id });
-        })
-        .catch(err => {
-          console.log(err, "test");
-        });
-    })
-    .catch(err => {
-      console.log(err);
-    })
-    .finally(() => {
-      mongoose.connection.close();
-    });
+  let id = req.body.id;
+  if (!id) {
+    id = (Date.now() + Math.floor(Math.random() * 1660290034505))
+      .toString(36)
+      .substring(2, 6);
+  }
+  try {
+    await Link.createNew(id, url);
+    res.json({ id });
+  } catch (err) {
+    if (err instanceof Error) res.status(500).json({ error: err.message, id });
+  } finally {
+    res.end();
+  }
 });
 
-app.get("/:id", (req, res, next) => {
+app.get("/:id", async (req, res, next) => {
   const id = req.params.id;
 
-  Link.findOne({ id })
-    .then(result => {
-      if (result) {
-        res.redirect(result.url);
-      } else {
-        next();
-      }
-    })
-    .catch(err => {
-      console.log(err);
-    })
-    .finally(() => {
-      res.end();
-    });
+  try {
+    const result = await Link.findOne({ id });
+    if (result) {
+      res.redirect(result.url);
+    } else {
+      next();
+    }
+  } catch (err) {
+    console.log(err);
+  } finally {
+    res.end();
+  }
 });
 
 // 404 page
