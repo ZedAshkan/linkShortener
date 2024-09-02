@@ -3,6 +3,7 @@ import { Schema, model, Model } from "mongoose";
 interface IBase {
   id: string;
   url: string;
+  // ip: string;
 }
 
 interface INew extends Model<IBase> {
@@ -13,6 +14,7 @@ const linkSchema = new Schema<IBase, INew>(
   {
     id: { type: String, required: true, unique: true },
     url: { type: String, required: true },
+    // ip: { type: String, required: true },
   },
   {
     timestamps: true,

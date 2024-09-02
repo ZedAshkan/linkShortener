@@ -10,6 +10,8 @@ dotenv.config();
 // create express app
 const app = express();
 
+console.log(process.env.DBURI);
+
 mongoose
   .connect(process.env.DBURI!)
   .then(() => {
@@ -35,7 +37,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.raw());
 
 app.get("/", (req, res) => {
-  res.render("index", { title: "Home" });
+  res.render("home/index", { title: "Home" });
 });
 
 app.post("/api", async (req, res) => {

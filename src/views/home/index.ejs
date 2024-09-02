@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-  <%- include('./partials/head.ejs') %>
+  <%- include('../_partials/head.ejs') %>
   <body>
-    <%- include('./partials/nav.ejs') %>
-    <div class="max-w-lg mx-auto">
-      <form class="flex items-center justify-center">
-        <div class="flex flex-col">
+    <%- include('../_partials/nav.ejs') %>
+    <div class="max-w-xs mx-auto">
+      <form class="flex flex-col gap-5 items-center justify-center">
+        <div class="flex flex-col gap-5">
           <input
             id="input2"
             type="text"
@@ -19,7 +19,7 @@
             class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           />
         </div>
-        <button type="submit" class="px-8 ml-4 bg-rose-600 text-white rounded">
+        <button type="submit" class="px-8 bg-rose-600 text-white rounded">
           go
         </button>
       </form>
