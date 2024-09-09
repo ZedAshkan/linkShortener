@@ -5,9 +5,12 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
+html {
   font-family: "Ubuntu", sans-serif;
-  color: #212529;
-  background-color: #f8fafc;
-  @apply text-slate-600;
+  background-image: url("https://s8.uupload.ir/files/bg_fp0o.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  @apply text-yellow-500 bg-slate-800;
 }

@@ -1,10 +1,21 @@
-<header class="flex flex-col mx-auto mb-8 max-w-xs">
-  <div
-    class="flex justify-between items-center shadow-sm py-2 border-b border-slate-300"
-  >
-    <span class="text-orange-300 text-lg">Zed Link Shortener</span>
-  </div>
-  <nav class="flex gap-3 text-slate-600">
-    <a class="hover:text-slate-800" href="/">Home</a>
+<header class="flex flex-col mx-auto mb-8 mt-5">
+  <nav class="flex items-center justify-between mx-5">
+    <h1 class="text-2xl">ZED</h1>
+    <!-- login and register buttons -->
+    <div class="flex items-center gap-9">
+      <a
+        href="/login"
+        class="text-base text-white flex items-center gap-2 bg-gray-900 py-3 px-10 rounded-full border border-[#353C4A] shadow-lg"
+        >Login <%- include('./icons/login-icon.ejs') %></a
+      >
+      <a
+        href="/register"
+        class="text-base bg-blue-900 py-3 px-10 rounded-full shadow-2xl text-white"
+        >Register</a
+      >
+    </div>
   </nav>
+  <div class="flex justify-between items-center shadow-sm py-2 my-32">
+    <h2 class="text-5xl mx-auto">Shorten your Loooooooong link :(</h2>
+  </div>
 </header>
